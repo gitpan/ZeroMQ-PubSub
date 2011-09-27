@@ -1,6 +1,6 @@
 --- #YAML:1.0
 name:               ZeroMQ-PubSub
-version:            0.02
+version:            0.03
 abstract:           ZeroMQ-based event messaging system.
 author:
     - Mischa Spiegelmock <revmischa@cpan.org>

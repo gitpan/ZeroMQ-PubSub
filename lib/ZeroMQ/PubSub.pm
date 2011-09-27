@@ -59,7 +59,7 @@ Version 0.01
 
 =cut
 
-our $VERSION = '0.02';
+our $VERSION = '0.03';
 
 =head1 SYNOPSIS
 
@@ -142,7 +142,9 @@ L<ZeroMQ::PubSub::Server>, L<ZeroMQ::PubSub::Client>
 =head1 TODO
 
 * Tests
+
 * Support non-blocking (w/ L<AnyEvent>)
+
 * More flexible event handling (remove L<MooseX::Event> dependency)
 
 =head1 AUTHOR
