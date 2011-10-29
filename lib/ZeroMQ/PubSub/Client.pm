@@ -1,11 +1,13 @@
 package ZeroMQ::PubSub::Client;
 
-use Moose;
+use Any::Moose;
 extends 'ZeroMQ::PubSub';
 
 use ZeroMQ qw/:all/;
 use Carp qw/croak/;
 use List::Util qw/shuffle/;
+
+#use Any::Moose 'X::Event';
 use MooseX::Event;
 
 # should only be used internally
@@ -149,6 +151,8 @@ sub poll_once {
 
 after 'subscribe' => sub {
     my ($self, $evt, $cb) = @_;
+
+    $self->print_debug("Got subscriber for $evt");
     
     # make sure we are connected and listening for events
     $self->connect_subscribe_sock;
@@ -157,7 +161,8 @@ after 'subscribe' => sub {
 
 =head2 publish($event, $params)
 
-Publishes $event to all subscribers on the server.
+Publishes $event to all subscribers on the server. This will block
+while attempting to connect.
 
 =cut
 
@@ -166,8 +171,8 @@ sub publish {
 
     $params ||= {};
     my $msg = {
-        __type   => $evt,
-        __params => $params,
+        type   => $evt,
+        params => $params,
     };
 
     # make sure we're connected
