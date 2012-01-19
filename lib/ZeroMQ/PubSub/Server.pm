@@ -155,9 +155,9 @@ Blocks and receives one event. Returns object parsed from JSON, or undef if fail
 sub recv {
     my ($self) = @_;
 
-    my $json = $self->publish_sock->recv_as('json');
+    my $json = eval { $self->publish_sock->recv_as('json') };
     unless ($json) {
-        warn "Got invalid event: failed to parse JSON";
+        warn "Got invalid event: failed to parse JSON: $@";
         return;
     }
 
@@ -195,10 +195,8 @@ sub poll_once {
             
     unless ($msg) {
         warn "Failed to parse message, may not have been valid JSON\n";
-        next;
+        return;
     }
-
-    
 
     # deep clone $msg so that event handlers can't modify it
     my $orig = clone($msg);
