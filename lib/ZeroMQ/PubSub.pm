@@ -1,9 +1,11 @@
 package ZeroMQ::PubSub;
 
-use Any::Moose;
+use Moose;
 use ZeroMQ qw/:all/;
 use JSON;
 use namespace::autoclean;
+
+with 'MooseX::Callbacks';
 
 has 'context' => (
     is => 'rw',
@@ -41,23 +43,19 @@ sub print_info {
 }
 
 sub DEMOLISH {
-    my ($self) = @_;
+    my ($self, $igd) = @_;
 
-    $self->publish_sock->close if $self->publish_socket_exists;
-    $self->subscribe_sock->close if $self->subscription_socket_exists;
+    $self->publish_sock->close if $self->publish_socket_exists && $self->publish_sock;
+    $self->subscribe_sock->close if $self->subscription_socket_exists && $self->subscribe_sock;
 }
 
 =head1 NAME
 
 ZeroMQ::PubSub - ZeroMQ-based event messaging system.
 
-=head1 VERSION
-
-Version 0.01
-
 =cut
 
-our $VERSION = '0.06';
+our $VERSION = '0.08';
 
 =head1 SYNOPSIS
 
@@ -86,10 +84,13 @@ $callback is called with two arguments: $self (client or server instance) and ev
 sub subscribe {
     my ($self, $evt, $cb) = @_;
 
-    $self->_ensure_event_handler_exists($evt);
-
+    # create callback wrapper
+    my $cb_wrapped = sub {
+        $cb->($self, @_);
+    };
+    
     # set up callback
-    $self->on($evt => $cb);
+    $self->register_callback($evt => $cb_wrapped);
 }
 
 
@@ -115,23 +116,8 @@ sub dispatch_event {
     my $params = $msg->{params} || {};
 
     # calls callbacks
-    $self->_ensure_event_handler_exists($type);
-    $self->emit($type => $params);
+    $self->dispatch($type => $params);
 }
-
-
-sub _ensure_event_handler_exists {
-    my ($self, $evt) = @_;
-    
-    # need to make sure we have an internal event handler
-    # (see MooseX::Event)
-    if (! $self->event_exists($evt)) {
-        # define new event. could make user declare all possible
-        # events up front but that's not very flexible.
-        $self->has_event($evt);
-    }
-}
-
 
 =head1 SEE ALSO
 
@@ -142,8 +128,6 @@ L<ZeroMQ::PubSub::Server>, L<ZeroMQ::PubSub::Client>
 * Tests
 
 * Support non-blocking (w/ L<AnyEvent>)
-
-* More flexible event handling (remove L<MooseX::Event> dependency)
 
 =head1 AUTHOR
 
