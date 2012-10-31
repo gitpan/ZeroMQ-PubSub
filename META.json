@@ -4,7 +4,7 @@
       "Mischa Spiegelmock <revmischa@cpan.org>"
    ],
    "dynamic_config" : 1,
-   "generated_by" : "ExtUtils::MakeMaker version 6.62, CPAN::Meta::Converter version 2.120351",
+   "generated_by" : "ExtUtils::MakeMaker version 6.62, CPAN::Meta::Converter version 2.112150",
    "license" : [
       "perl_5"
    ],
@@ -22,23 +22,23 @@
    "prereqs" : {
       "build" : {
          "requires" : {
-            "ExtUtils::MakeMaker" : "0"
+            "ExtUtils::MakeMaker" : 0
          }
       },
       "configure" : {
          "requires" : {
-            "ExtUtils::MakeMaker" : "0"
+            "ExtUtils::MakeMaker" : 0
          }
       },
       "runtime" : {
          "requires" : {
-            "Clone" : "0",
-            "JSON" : "0",
-            "Moose" : "0",
-            "MooseX::Callbacks" : "0",
-            "Test::More" : "0",
-            "ZeroMQ" : "0",
-            "namespace::autoclean" : "0"
+            "Clone" : 0,
+            "JSON" : 0,
+            "Moose" : 0,
+            "MooseX::Callbacks" : 0,
+            "Test::More" : 0,
+            "ZMQ::LibZMQ2" : 0,
+            "namespace::autoclean" : 0
          }
       }
    },
@@ -48,5 +48,5 @@
          "url" : "git://github.com/revmischa/zeromq-pubsub.git"
       }
    },
-   "version" : "0.08"
+   "version" : "0.09"
 }

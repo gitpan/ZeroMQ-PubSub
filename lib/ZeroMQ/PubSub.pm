@@ -1,7 +1,7 @@
 package ZeroMQ::PubSub;
 
 use Moose;
-use ZeroMQ qw/:all/;
+use ZeroMQ;
 use JSON;
 use namespace::autoclean;
 
@@ -55,7 +55,7 @@ ZeroMQ::PubSub - ZeroMQ-based event messaging system.
 
 =cut
 
-our $VERSION = '0.08';
+our $VERSION = '0.09';
 
 =head1 SYNOPSIS
 
@@ -151,7 +151,7 @@ L<ZeroMQ>
 
 =head1 LICENSE AND COPYRIGHT
 
-Copyright 2011 Mischa Spiegelmock.
+Copyright 2012 Mischa Spiegelmock.
 
 This program is free software; you can redistribute it and/or modify it
 under the terms of either: the GNU General Public License as published
